@@ -16,5 +16,5 @@ cxxinclude("vector")
 cxxinclude("set")
 
 include("types.jl")
-
+include("ops.jl")
 end

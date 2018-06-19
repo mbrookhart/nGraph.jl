@@ -1,3 +1,5 @@
+import Base.cconvert#, Base.promote_rule
+
 Backend = cxxt"std::shared_ptr<ngraph::runtime::Backend>"
 (::Type{<:Backend})(name) = icxx"ngraph::runtime::Backend::create($name);"
 
