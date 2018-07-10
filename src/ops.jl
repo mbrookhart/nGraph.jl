@@ -1,17 +1,33 @@
 import Base.abs, Base.acos, Base.asin, Base.atan, Base.cosh, Base.cos, Base.exp,
-       Base.log, Base.sinh, Base.sin, Base.sqrt, Base.tanh, Base.tan
+       Base.log, Base.sinh, Base.sin, Base.sqrt, Base.tanh, Base.tan, Base.&, Base.-
+
+abs(x::Parameter) = abs(Node(x))
+acos(x::Parameter) = acos(Node(x))
+(&)(x::Parameter, y::Parameter) = (&)(Node(x), Node(y))
+asin(x::Parameter) = asin(Node(x))
+atan(x::Parameter) = atan(Node(x))
+cosh(x::Parameter) = cosh(Node(x))
+cos(x::Parameter) = cos(Node(x))
+exp(x::Parameter) = exp(Node(x))
+log(x::Parameter) = log(Node(x))
+-(x::Parameter) = -(Node(x))
+relu(x::Parameter) = relu(Node(x))
+relu(x) = (x > 0) ? x : 0
+export relu
+sinh(x::Parameter) = sinh(Node(x))
+sin(x::Parameter) = sin(Node(x))
+sqrt(x::Parameter) = sqrt(Node(x))
+tanh(x::Parameter) = tanh(Node(x))
+tan(x::Parameter) = tan(Node(x))
+
 
 abs(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Abs>($x));"
-abs(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Abs>($x));"
 acos(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Acos>($x));"
-acos(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Acos>($x));"
 #add() =
 #allreduce() =
-#and() =
+(&)(x::Node, y::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::And>($x, $y));"
 asin(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Asin>($x));"
-asin(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Asin>($x));"
 atan(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Atan>($x));"
-atan(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Atan>($x));"
 #avg_pool() =
 #batch_norm() =
 #broadcast() =
@@ -21,14 +37,11 @@ atan(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shar
 #convert() =
 #convolution() =
 cosh(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Cosh>($x));"
-cosh(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Cosh>($x));"
 cos(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Cos>($x));"
-cos(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Cos>($x));"
 #divide() =
 #dot() =
 #equal() =
 exp(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Exp>($x));"
-exp(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Exp>($x));"
 #floor() =
 #function_call() =
 #get_output_element() =
@@ -37,15 +50,12 @@ exp(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_share
 #less_eq() =
 #less() =
 log(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Log>($x));"
-log(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Log>($x));"
-#max() =
 #maximum() =
 #max_pool() =
 #min() =
 #minimum() =
 #multiply() =
-#-(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Negative>($x));"
-#-(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Negative>($x));"
+-(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Negative>($x));"
 #not_equal() =
 #not() =
 #one_hot() =
@@ -59,9 +69,6 @@ log(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_share
 #reduce() =
 #reduce_window() =
 relu(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Relu>($x));"
-relu(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Relu>($x));"
-relu(x) = (x > 0) ? x : 0
-export relu
 #remainder() =
 #replace_slice() =
 #reshape() =
@@ -73,17 +80,12 @@ export relu
 #select() =
 #sign() =
 sinh(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Sinh>($x));"
-sinh(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Sinh>($x));"
 sin(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Sin>($x));"
-sin(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Sin>($x));"
 #slice() =
 #softmax() =
 sqrt(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Sqrt>($x));"
-sqrt(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Sqrt>($x));"
 #stop_gradient() =
 #subtract() =
 #sum() =
 tanh(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Tanh>($x));"
-tanh(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Tanh>($x));"
 tan(x::Node) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Tan>($x));"
-tan(x::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>(std::make_shared<ngraph::op::Tan>($x));"

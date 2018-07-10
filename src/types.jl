@@ -1,4 +1,4 @@
-import Base.cconvert#, Base.promote_rule
+import Base.convert#, Base.promote_rule
 
 Backend = cxxt"std::shared_ptr<ngraph::runtime::Backend>"
 (::Type{<:Backend})(name) = icxx"ngraph::runtime::Backend::create($name);"
@@ -9,12 +9,14 @@ get_element_type(Arr) = ElementType(eltype(Arr)(0))
 
 Shape = cxxt"std::vector< size_t >"
 
-Node = cxxt"std::shared_ptr<ngraph::Node>"
-NodeVector = cxxt"std::vector< std::shared_ptr< ngraph::Node > >"
-
 Parameter = cxxt"std::shared_ptr<ngraph::op::Parameter>"
 (::Type{<:Parameter})(element_type::ElementType, shape::Shape) = icxx"std::make_shared<ngraph::op::Parameter>($element_type, $shape);"
 ParameterVector = cxxt"std::vector< std::shared_ptr< ngraph::op::Parameter > >"
+
+Node = cxxt"std::shared_ptr<ngraph::Node>"
+NodeVector = cxxt"std::vector< std::shared_ptr< ngraph::Node > >"
+
+convert(::Type{Node}, node::Parameter) = icxx"std::dynamic_pointer_cast<ngraph::Node>($node);"
 
 TensorView = cxxt"std::shared_ptr<ngraph::runtime::TensorView>"
 TensorViewVector = cxxt"std::vector< std::shared_ptr< ngraph::runtime::TensorView > >"
